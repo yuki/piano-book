@@ -1,0 +1,55 @@
+\documentclass[11pt,openany]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\RequirePackage[a4paper,margin=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\RequirePackage{svg} % for svg images
+% \svgsetup{inkscapelatex=false} % don't treat text in svg as independent: https://tex.stackexchange.com/a/599018/305952
+% \RequirePackage[export]{adjustbox} % for resizing svg images
+
+% Specify section names explicitly in \titleformat with #1
+%    newparttoc, % Required for writing the part toc entry number in a standard way (overriding default LaTeX behavior) so the titletoc package can style it
+\RequirePackage[explicit]{titlesec}
+
+\newcommand{\outputpartpage}[2]{
+    \thispagestyle{empty}
+    \begin{center}
+        \includesvg[width=0.6\textwidth]{#2/logo.svg}
+    \end{center}
+}
+
+\titleformat{\part}
+  [block]
+  {\outputpartpage{\thepart}{#1}}
+  {}
+  {0pt}
+  {}
+
+
+%--------------------------------------------------------------------------
+% Links
+%--------------------------------------------------------------------------
+\RequirePackage[final,linktoc=all]{hyperref}
+\urlstyle{same}
+\hypersetup{
+    colorlinks=true,
+    allcolors=black,
+    bookmarks=true,
+    bookmarksopen=true
+}
+
+
+\begin{document}
+    \begin{center}
+        \includesvg[width=\paperwidth,height=\paperheight]{piano_cover.svg}
+    \end{center}
+
+    \newgeometry{margin=2cm}
+    
+    \tableofcontents
+
+    \newgeometry{margin=0cm}
+    
+    \input{estructura.tex}
+\end{document}
