@@ -8,7 +8,7 @@ rm -fr svg-inkscape
 for grupo in */ ; do
     grupo=${grupo%/}
     #echo "\\setpartlogo{\detokenize{$grupo/logo.svg}}" >> "$OUTPUT"
-    echo "\\part{$grupo}" >> "$OUTPUT"
+    echo "\\part*{$grupo}" >> "$OUTPUT"
 
     # echo "\\grouppart{\detokenize{$grupo/logo.svg}}" >> "$OUTPUT"
 

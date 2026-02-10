@@ -12,16 +12,16 @@
 %    newparttoc, % Required for writing the part toc entry number in a standard way (overriding default LaTeX behavior) so the titletoc package can style it
 \RequirePackage[explicit]{titlesec}
 
-\newcommand{\outputpartpage}[2]{
+\newcommand{\outputpartpage}[1]{
     \thispagestyle{empty}
     \begin{center}
-        \includesvg[width=0.6\textwidth]{#2/logo.svg}
+        \includesvg[width=0.6\textwidth]{#1/logo.svg}
     \end{center}
 }
 
 \titleformat{\part}
   [block]
-  {\outputpartpage{\thepart}{#1}}
+  {\outputpartpage{#1}}
   {}
   {0pt}
   {}
@@ -38,6 +38,47 @@
     bookmarks=true,
     bookmarksopen=true
 }
+
+
+%--------------------------------------------------------------------------
+% TOC
+%--------------------------------------------------------------------------
+\RequirePackage{titletoc}
+
+\makeatletter
+\renewcommand\tableofcontents{
+  \begingroup
+    \hypersetup{hidelinks} % hide links in TOC, too much blue in it
+    %\chapter*{\contentsname}
+    \setlength{\parskip}{0em}
+    \@starttoc{toc}
+    \setlength{\parskip}{1.2em}
+  \endgroup
+  \clearpage
+}
+\makeatother
+
+% inspired by https://www.latextemplates.com/template/the-legrand-orange-book
+% Styling of unnumbered parts in the table of contents
+\newcommand{\tocentrypartunnumbered}[1]{%
+    \setlength\fboxsep{0pt}% Remove box padding
+    \contentslabel[%
+    % Part title box
+    \colorbox{black}{% Background color
+        \strut\parbox[c][1cm]{\linewidth}{% Box size
+            \centering\Large\sffamily #1% Part title
+        }%
+    }%
+    ]{1.25cm}
+}
+
+\titlecontents{part} % Section type being modified
+  [1.25cm] % Left indentation
+  {\addvspace{20pt}\color{white}\Large\sffamily\bfseries\hypersetup{linkcolor=white}} % Before code
+  {} % Formatting of numbered sections of this type
+  {\tocentrypartunnumbered} % Formatting of numberless sections of this type
+  {} % Formatting of the filler to the right of the heading and the page number
+  [] % After code
 
 
 \begin{document}
