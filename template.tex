@@ -5,17 +5,23 @@
 \usepackage{graphicx}
 \usepackage{fontspec}
 \RequirePackage{svg} % for svg images
+\svgsetup{inkscapepath=svgsubdir} %procesa los svg en su propia ruta, para mantener el proyecto ordenado
 % \svgsetup{inkscapelatex=false} % don't treat text in svg as independent: https://tex.stackexchange.com/a/599018/305952
 % \RequirePackage[export]{adjustbox} % for resizing svg images
 
 % Specify section names explicitly in \titleformat with #1
 %    newparttoc, % Required for writing the part toc entry number in a standard way (overriding default LaTeX behavior) so the titletoc package can style it
 \RequirePackage[explicit]{titlesec}
+\RequirePackage{tikz}
 
 \newcommand{\outputpartpage}[1]{
     \thispagestyle{empty}
     \begin{center}
-        \includesvg[width=0.6\textwidth]{#1/logo.svg}
+        \IfFileExists{#1/logo.svg}{%
+            \includesvg[width=0.6\textwidth]{#1/logo.svg}%
+        }{%
+            \Huge\sffamily\bfseries #1%
+        }%
     \end{center}
 }
 
@@ -81,10 +87,36 @@
   [] % After code
 
 
+% para la portada, con texto encima de la imagen
+% #1 → ruta del svg
+% #2 → texto
+% #3 → año
+\newcommand{\cover}[3]{%
+    \clearpage
+    \thispagestyle{empty}
+    \begin{tikzpicture}[remember picture,overlay]
+        \node[anchor=center] at (current page.center)
+            {\includesvg[width=\paperwidth,height=\paperheight]{#1}};
+        \node[
+            anchor=center,
+            align=center,
+            yshift=-2cm
+        ] at (current page.center)
+        {
+            {\color{white}\bfseries\fontsize{40pt}{0pt}\selectfont #2}\\[0.5cm]
+            {\color{white}\bfseries\fontsize{15pt}{0pt}\selectfont #3}
+        };
+    \end{tikzpicture}
+    \clearpage
+}
+
+
+
 \begin{document}
-    \begin{center}
-        \includesvg[width=\paperwidth,height=\paperheight]{piano_cover.svg}
-    \end{center}
+    \cover
+        {\detokenize{piano_cover.svg}}
+        {Partituras para piano}
+        {(2026)}
 
     \newgeometry{margin=2cm}
     
