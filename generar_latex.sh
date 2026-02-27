@@ -3,20 +3,17 @@
 OUTPUT="estructura.tex"
 > "$OUTPUT"
 
-rm -fr svg-inkscape
+find . -name svg-inkscape -type d -prune -exec rm -fr "{}" \;
 
 for grupo in */ ; do
     grupo=${grupo%/}
-    #echo "\\setpartlogo{\detokenize{$grupo/logo.svg}}" >> "$OUTPUT"
-    echo "\\part*{$grupo}" >> "$OUTPUT"
-
-    # echo "\\grouppart{\detokenize{$grupo/logo.svg}}" >> "$OUTPUT"
+    echo "\\part{$grupo}" >> "$OUTPUT"
 
     for song in "$grupo"/*/; do
         song=${song%/}
         song_name="${song##*/}"
 
-        echo "\\addcontentsline{toc}{chapter}{$song_name}" >> "$OUTPUT"
+        echo "\\chapter{$song_name}" >> "$OUTPUT"
 
         echo "\\begin{center}" >> "$OUTPUT"
         # SVGs ordenados de forma natural, manteniendo ruta completa

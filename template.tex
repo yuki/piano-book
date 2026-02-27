@@ -32,6 +32,20 @@
   {0pt}
   {}
 
+\titlespacing*{\chapter}{0pt}{0pt}{0pt}
+
+%capítulos forzados a salir en página impar, para que se puedan imprimir a doble cara sin problemas
+\newcommand{\forceleftpage}{%
+  \clearpage
+  \ifodd\value{page}\hbox{}\newpage\fi
+}
+
+\let\oldchapter\chapter
+\renewcommand{\chapter}[1]{%
+    \forceleftpage
+    \addcontentsline{toc}{chapter}{#1}%
+    \thispagestyle{empty}
+}
 
 %--------------------------------------------------------------------------
 % Links
